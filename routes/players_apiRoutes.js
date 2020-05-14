@@ -59,6 +59,19 @@ app.get("/api/players/position/RB", function(req,res) {
     });
   });
 
+  // PUt route for updating draft status
+  app.put("/api/players", function(req, res) {
+    db.Players.update(
+      req.body,
+      {
+        where: {
+          user_team: req.body.user_team
+        }
+      }).then(function(dbPlayers) {
+        res.json(dbPlayers)
+      });
+  });
+
   // Create a new example
   app.post("/api/examples", function(req, res) {
     db.Example.create(req.body).then(function(dbExample) {

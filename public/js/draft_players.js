@@ -7,20 +7,13 @@ $(document).ready(function() {
     var qbList = $(".qbs")
     var nextRow = $(".next-qb-row")
     var qbs = [];
+    // $(document).on("click", "button.user-team", userDraft)
 
     getQBs();
     getRBs();
     getWRs();
     getTEs();
 
-    // function initializeRows () {
-    //     qbContainer.empty();
-    //     var rowsToAdd = [];
-    //         for (var i = 0; i < 5; i++) {
-    //             rowsToAdd.push(createNewRow(qbs[i]))
-    //         }
-    //         qbContainer.prepend(rowsToAdd)
-    // }
 
     function createNewRow(positionData) {
         var newTR = $("<tr>");
@@ -117,5 +110,9 @@ $(document).ready(function() {
                 teContainer.append(rowsToAdd)
         });
     };
+
+    // function userDraft() {
+    //     var userTeam = 
+    // }
 
 })
