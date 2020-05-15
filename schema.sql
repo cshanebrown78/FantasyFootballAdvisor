@@ -1,0 +1,4 @@
+DROP DATABASE IF EXISTS teamdb;
+CREATE DATABASE teamdb;
+
+
