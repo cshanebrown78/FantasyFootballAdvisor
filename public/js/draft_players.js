@@ -4,6 +4,8 @@ $(document).ready(function() {
     var rbContainer = $(".rb-container");
     var wrContainer = $(".wr-container");
     var teContainer = $(".te-container");
+    var userContainer = $(".user-container");
+    var otherContainer = $(".other-container");
     var qbList = $(".qbs")
     var nextRow = $(".next-qb-row")
     var qbs = [];
@@ -13,6 +15,8 @@ $(document).ready(function() {
     getRBs();
     getWRs();
     getTEs();
+    getUserTeam();
+    getOtherTeams();
 
 
     function createNewRow(positionData) {
@@ -113,19 +117,6 @@ $(document).ready(function() {
         });
     };
 
-    // function userDraft() {
-    //     console.log($this)
-    //     var userTeamId = $(this).data("id");
-    //     var isUserDrafted = {
-    //         user_team: 1
-    //     };
-    //     $.ajax("api/players/" + userTeamId, {
-    //         type: "PUT",
-    //         data: isUserDrafted,
-    //     }).then(function() {
-    //         location.reload();
-    //     });
-    // }
 
     $(document).on("click", "button.user-team", function (event) {
         event.preventDefault();
@@ -156,5 +147,58 @@ $(document).ready(function() {
             location.reload();
         });
     });
+
+    function createNewUserTeamRow(positionData) {
+        var newTR = $("<tr>");
+        // newTR.data("quarterback", qbData);
+        // console.log(positionData.id)
+        // newTR.data("player-id", positionData.id)
+        newTR.append("<td>" + positionData.player_name + "</td>");
+        newTR.append("<td>" + positionData.draft_rank + "</td>");
+        newTR.append("<td>" + positionData.team_name + "</td>");
+        newTR.append("<td>" + positionData.position + "</td>");
+        newTR.append("<td>" + positionData.bye + "</td>");
+        newTR.append("</tr>")
+        return newTR;
+        
+    }
+
+    function getUserTeam () {
+        $.get("/api/players/", function(data) {
+            var userDrafted = [];
+            for (var j = 0; j < data.length; j++) {
+                if (data[j].user_team === true) {
+                    userDrafted.push(data[j])
+                }
+            }
+                var rowsToAdd = [];
+                    for (var i = 0; i < userDrafted.length; i++) {
+                        rowsToAdd.push(createNewUserTeamRow(userDrafted[i]))
+                    }
+                userContainer.append(rowsToAdd)
+                
+               
+            
+        });
+    };
+
+    function getOtherTeams () {
+        $.get("/api/players/", function(data) {
+            var otherDrafted = [];
+            for (var j = 0; j < data.length; j++) {
+                if (data[j].other_team === true) {
+                    otherDrafted.push(data[j])
+                }
+            }
+                var rowsToAdd = [];
+                    for (var i = 0; i < otherDrafted.length; i++) {
+                        rowsToAdd.push(createNewUserTeamRow(otherDrafted[i]))
+                    }
+                otherContainer.append(rowsToAdd)
+                
+               
+            
+        });
+    };
 
 })
