@@ -9,7 +9,7 @@ $(document).ready(function() {
     var qbList = $(".qbs")
     var nextRow = $(".next-qb-row")
     var qbs = [];
-    // $(document).on("click", ".user-team", userDraft)
+
 
     getQBs();
     getRBs();
@@ -21,9 +21,6 @@ $(document).ready(function() {
 
     function createNewRow(positionData) {
         var newTR = $("<tr>");
-        // newTR.data("quarterback", qbData);
-        // console.log(positionData.id)
-        // newTR.data("player-id", positionData.id)
         newTR.append("<td>" + positionData.player_name + "</td>");
         newTR.append("<td>" + positionData.draft_rank + "</td>");
         newTR.append("<td>" + positionData.team_name + "</td>");
@@ -36,19 +33,15 @@ $(document).ready(function() {
 
     function getQBs () {
         $.get("/api/players/position/QB", function(data) {
-            // console.log(data);
-            // console.log(data[0].user_team);
             var undrafted = [];
             for (var j = 0; j < data.length; j++) {
                 if (data[j].user_team === false && data[j].other_team === false) {
                     undrafted.push(data[j])
                 }
             }
-            // console.log(undrafted)
                 var rowsToAdd = [];
                     for (var i = 0; i < 5; i++) {
                         rowsToAdd.push(createNewRow(undrafted[i]))
-                        // console.log(rowsToAdd)
                     }
                 qbContainer.append(rowsToAdd)
                 
@@ -59,19 +52,15 @@ $(document).ready(function() {
 
     function getRBs () {
         $.get("/api/players/position/RB", function(data) {
-            // console.log(data);
-            // console.log(data[0].user_team);
             var undrafted = [];
             for (var j = 0; j < data.length; j++) {
                 if (data[j].user_team === false && data[j].other_team === false) {
                     undrafted.push(data[j])
                 }
             }
-            // console.log(undrafted)
                 var rowsToAdd = [];
                     for (var i = 0; i < 5; i++) {
                         rowsToAdd.push(createNewRow(undrafted[i]))
-                        // console.log(rowsToAdd)
                     }
                 rbContainer.append(rowsToAdd)
         });
@@ -79,19 +68,15 @@ $(document).ready(function() {
 
     function getWRs () {
         $.get("/api/players/position/WR", function(data) {
-            // console.log(data);
-            // console.log(data[0].user_team);
             var undrafted = [];
             for (var j = 0; j < data.length; j++) {
                 if (data[j].user_team === false && data[j].other_team === false) {
                     undrafted.push(data[j])
                 }
             }
-            // console.log(undrafted)
                 var rowsToAdd = [];
                     for (var i = 0; i < 5; i++) {
                         rowsToAdd.push(createNewRow(undrafted[i]))
-                        // console.log(rowsToAdd)
                     }
                 wrContainer.append(rowsToAdd)
         });
@@ -99,19 +84,15 @@ $(document).ready(function() {
 
     function getTEs () {
         $.get("/api/players/position/TE", function(data) {
-            // console.log(data);
-            // console.log(data[0].user_team);
             var undrafted = [];
             for (var j = 0; j < data.length; j++) {
                 if (data[j].user_team === false && data[j].other_team === false) {
                     undrafted.push(data[j])
                 }
             }
-            // console.log(undrafted)
                 var rowsToAdd = [];
                     for (var i = 0; i < 5; i++) {
                         rowsToAdd.push(createNewRow(undrafted[i]))
-                        // console.log(rowsToAdd)
                     }
                 teContainer.append(rowsToAdd)
         });
@@ -121,7 +102,6 @@ $(document).ready(function() {
     $(document).on("click", "button.user-team", function (event) {
         event.preventDefault();
         var userTeamId = $(this).attr("player-id");
-        console.log(userTeamId)
         var isUserDrafted = {
             user_team: 1
         };
@@ -136,7 +116,6 @@ $(document).ready(function() {
     $(document).on("click", "button.other-team", function (event) {
         event.preventDefault();
         var otherTeamId = $(this).attr("player-id");
-        console.log(otherTeamId)
         var isOtherDrafted = {
             other_team: 1
         };
@@ -150,9 +129,6 @@ $(document).ready(function() {
 
     function createNewUserTeamRow(positionData) {
         var newTR = $("<tr>");
-        // newTR.data("quarterback", qbData);
-        // console.log(positionData.id)
-        // newTR.data("player-id", positionData.id)
         newTR.append("<td>" + positionData.player_name + "</td>");
         newTR.append("<td>" + positionData.draft_rank + "</td>");
         newTR.append("<td>" + positionData.team_name + "</td>");
@@ -200,5 +176,27 @@ $(document).ready(function() {
             
         });
     };
+
+    $(document).on("click", "button.undo-draft", function (event) {
+        event.preventDefault();
+        if (confirm("Are you sure you want to reset the draft?")) {
+            var undoDraft = {
+                user_team: 0,
+                other_team: 0
+            };
+            for(var x = 0; x < 100; x++) {
+                $.ajax("api/players/" + x, {
+                    type: "PUT",
+                    data: undoDraft,
+                }).then(function() {
+                    location.reload();
+                });
+            }
+        } else {
+            location.reload();
+        }
+    });
+
+
 
 })
