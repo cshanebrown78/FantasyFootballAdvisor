@@ -7,7 +7,7 @@ $(document).ready(function() {
     var qbList = $(".qbs")
     var nextRow = $(".next-qb-row")
     var qbs = [];
-    // $(document).on("click", "button.user-team", userDraft)
+    // $(document).on("click", ".user-team", userDraft)
 
     getQBs();
     getRBs();
@@ -18,11 +18,13 @@ $(document).ready(function() {
     function createNewRow(positionData) {
         var newTR = $("<tr>");
         // newTR.data("quarterback", qbData);
+        // console.log(positionData.id)
+        // newTR.data("player-id", positionData.id)
         newTR.append("<td>" + positionData.player_name + "</td>");
         newTR.append("<td>" + positionData.draft_rank + "</td>");
         newTR.append("<td>" + positionData.team_name + "</td>");
-        newTR.append("<td><button class='user-team'>Draft</button></td>");
-        newTR.append("<td><button class='other-team'>Drafted</button></td>")
+        newTR.append("<td><button class='user-team' player-id='" + positionData.id + "'>Draft</button></td>");
+        newTR.append("<td><button class='other-team'player-id='" + positionData.id + "'>Drafted</button></td>");
         newTR.append("</tr>")
         return newTR;
         
@@ -38,11 +40,11 @@ $(document).ready(function() {
                     undrafted.push(data[j])
                 }
             }
-            console.log(undrafted)
+            // console.log(undrafted)
                 var rowsToAdd = [];
                     for (var i = 0; i < 5; i++) {
                         rowsToAdd.push(createNewRow(undrafted[i]))
-                        console.log(rowsToAdd)
+                        // console.log(rowsToAdd)
                     }
                 qbContainer.append(rowsToAdd)
                 
@@ -61,11 +63,11 @@ $(document).ready(function() {
                     undrafted.push(data[j])
                 }
             }
-            console.log(undrafted)
+            // console.log(undrafted)
                 var rowsToAdd = [];
                     for (var i = 0; i < 5; i++) {
                         rowsToAdd.push(createNewRow(undrafted[i]))
-                        console.log(rowsToAdd)
+                        // console.log(rowsToAdd)
                     }
                 rbContainer.append(rowsToAdd)
         });
@@ -81,11 +83,11 @@ $(document).ready(function() {
                     undrafted.push(data[j])
                 }
             }
-            console.log(undrafted)
+            // console.log(undrafted)
                 var rowsToAdd = [];
                     for (var i = 0; i < 5; i++) {
                         rowsToAdd.push(createNewRow(undrafted[i]))
-                        console.log(rowsToAdd)
+                        // console.log(rowsToAdd)
                     }
                 wrContainer.append(rowsToAdd)
         });
@@ -101,18 +103,58 @@ $(document).ready(function() {
                     undrafted.push(data[j])
                 }
             }
-            console.log(undrafted)
+            // console.log(undrafted)
                 var rowsToAdd = [];
                     for (var i = 0; i < 5; i++) {
                         rowsToAdd.push(createNewRow(undrafted[i]))
-                        console.log(rowsToAdd)
+                        // console.log(rowsToAdd)
                     }
                 teContainer.append(rowsToAdd)
         });
     };
 
     // function userDraft() {
-    //     var userTeam = 
+    //     console.log($this)
+    //     var userTeamId = $(this).data("id");
+    //     var isUserDrafted = {
+    //         user_team: 1
+    //     };
+    //     $.ajax("api/players/" + userTeamId, {
+    //         type: "PUT",
+    //         data: isUserDrafted,
+    //     }).then(function() {
+    //         location.reload();
+    //     });
     // }
+
+    $(document).on("click", "button.user-team", function (event) {
+        event.preventDefault();
+        var userTeamId = $(this).attr("player-id");
+        console.log(userTeamId)
+        var isUserDrafted = {
+            user_team: 1
+        };
+        $.ajax("api/players/" + userTeamId, {
+            type: "PUT",
+            data: isUserDrafted,
+        }).then(function() {
+            location.reload();
+        });
+    });
+
+    $(document).on("click", "button.other-team", function (event) {
+        event.preventDefault();
+        var otherTeamId = $(this).attr("player-id");
+        console.log(otherTeamId)
+        var isOtherDrafted = {
+            other_team: 1
+        };
+        $.ajax("api/players/" + otherTeamId, {
+            type: "PUT",
+            data: isOtherDrafted,
+        }).then(function() {
+            location.reload();
+        });
+    });
 
 })

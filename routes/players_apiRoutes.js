@@ -60,12 +60,12 @@ app.get("/api/players/position/RB", function(req,res) {
   });
 
   // PUt route for updating draft status
-  app.put("/api/players", function(req, res) {
+  app.put("/api/players/:id", function(req, res) {
     db.Players.update(
       req.body,
       {
         where: {
-          user_team: req.body.user_team
+          id: req.params.id
         }
       }).then(function(dbPlayers) {
         res.json(dbPlayers)
