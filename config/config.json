@@ -17,5 +17,12 @@
   "production": {
     "use_env_variable": "JAWSDB_URL",
     "dialect": "mysql"
+  },
+  "jaws": {
+    "username": "sql3340957",
+    "password": "UFwneJmCFs",
+    "host": "sql3.freemysqlhosting.net",
+    "database": "hop9kmesikdqkg9q",
+    "dialect": "mysql"
   }
 }

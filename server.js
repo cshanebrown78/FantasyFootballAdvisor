@@ -13,18 +13,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));
 
-// Handlebars
-// app.engine(
-//   "handlebars",
-//   exphbs({
-//     defaultLayout: "main"
-//   })
-// );
 app.set("views", path.join(__dirname, "public"));
 app.set("view engine", "html");
 app.engine("html", require("ejs").renderFile);
 
 // Routes
+require("./routes/players_apiRoutes")(app);
 require("./routes/userApiRoutes")(app);
 require("./routes/htmlRoutes")(app);
 
