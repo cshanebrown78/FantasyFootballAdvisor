@@ -25,10 +25,10 @@
                     <a class="nav-link" id="homeLink" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="clubhouseLink" href="#">Club House</a>
+                    <a class="nav-link" id="clubhouseLink" >Club House</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="draftroomLink" href="#">Draftroom</a>
+                    <a class="nav-link" id="draftroomLink" >Draftroom</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
@@ -201,9 +201,7 @@
         if (newUserPassword == newUserPasswordConfirm) {
             $.post(currentURL + "api/users", newUser);
             // location.href = currentURL
-            $("#clubhouseLink").removeAttr("href");
             $("#clubhouseLink").attr("href", "/clubhouse");
-            $("#draftroomLink").removeAttr("href");
             $("#draftroomLink").attr("href", "/draft");
         } else {
             $(".cont_form_sign_up").append(passwordsDontMatch);
