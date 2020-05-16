@@ -6,5 +6,9 @@ branches:
 cache:
   directories:
     - node_modules
+services:
+  - mysql
+env:
+  - NODE_ENV=test
 before_install:
   - mysql -e 'USE DATABASE hop9kmesikdqkg9q;'
