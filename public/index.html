@@ -12,37 +12,22 @@
 </head>
 
 <body>
-
-    <!-- <div class id="nav">
-        <h1 class="title">Fantasy Football Advisor</h1>
-        <ul class="nav justify-content-center">
-            <li class="nav-item">
-                <a class="nav-link" href="#">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Clubhouse</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Draftroom</a>
-            </li>
-        </ul>
-    </div> -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
             aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <a class="navbar-brand" href="#">Fantasy Football Advisor</a>
+            <a class="navbar-brand" href="/">Fantasy Football Advisor</a>
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Club House</a>
+                    <a class="nav-link" href="/clubhouse">Club House</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Draftroom</a>
+                    <a class="nav-link" href="/draft">Draftroom</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
@@ -97,18 +82,18 @@
                     <div class="cont_form_login">
                         <a href="#" onclick="ocultar_login_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
                         <h2>LOGIN</h2>
-                        <input type="text" placeholder="Username" />
-                        <input type="password" placeholder="Password" />
-                        <button class="btn_login" onclick="cambiar_login()">LOGIN</button>
+                        <input type="text" id="returningUserName" placeholder="Username" />
+                        <input type="password" id="returningUserPassword" placeholder="Password" />
+                        <button class="btn_login" id="logIn">LOGIN</button>
                     </div>
 
                     <div class="cont_form_sign_up">
                         <a href="#" onclick="ocultar_login_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
                         <h2>SIGN UP</h2>
-                        <input type="text" placeholder="Username" />
-                        <input type="password" placeholder="Password" />
-                        <input type="password" placeholder="Confirm Password" />
-                        <button class="btn_sign_up" onclick="cambiar_sign_up()">SIGN UP</button>
+                        <input type="text" id="newUserName" placeholder="Username" />
+                        <input type="password" id="newUserPassword" placeholder="Password" />
+                        <input type="password" id="newUserPasswordConfirm" placeholder="Confirm Password" />
+                        <button class="btn_sign_up" id="signUp">SIGN UP</button>
 
                     </div>
 
@@ -118,6 +103,12 @@
         </div>
     </div>
 </body>
+
+
+<script
+    src="https://code.jquery.com/jquery-3.5.1.min.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+    crossorigin="anonymous"></script>
 <script>
 
     function cambiar_login() {
@@ -164,8 +155,56 @@
 
     }
 
+    $("#logIn").on("click", function() {
+        event.preventDefault();
+        var currentURL = window.location
 
+        var returningUserName = $("#returningUserName").val().trim();
+        var returningUserPassword = $("#returningUserPassword").val().trim();
 
+        var returningUser = {
+            userName: returningUserName,
+            password: returningUserPassword
+        }
+        console.log(returningUser)
+
+        $.get("api/users", function(res) {
+            console.log(res);
+            for (var i = 0; i < res.length; i++){
+                if (returningUser.userName === res[i].userName && returningUser.password === res[i].password) {
+                    location.href = currentURL;
+                } else {
+                    var wrongUserOrPass = $("<p>");
+                    wrongUserOrPass.text("Either the username or password are incorrect. Please try agian.")
+                    $(".cont_form_login").append(wrongUserOrPass);
+                }
+            }
+        })
+    })
+
+    $("#signUp").on("click", function() {
+        var currentURL = window.location;
+
+        var newUserName = $("#newUserName").val().trim();
+        var newUserPassword = $("#newUserPassword").val().trim();
+        var newUserPasswordConfirm = $("#newUserPasswordConfirm").val().trim();
+
+        var newUser = {
+            userName: newUserName,
+            password: newUserPassword
+        }
+        console.log(newUser)
+
+        var passwordsDontMatch = $("<p>");
+        passwordsDontMatch.text("Sorry, passwords do not match. Please try again.");
+
+        if (newUserPassword == newUserPasswordConfirm) {
+            $.post(currentURL + "api/users", newUser);
+            location.href = currentURL
+        } else {
+            $(".cont_form_sign_up").append(passwordsDontMatch);
+        }
+    })
 
 </script>
 

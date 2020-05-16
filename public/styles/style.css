@@ -27,9 +27,13 @@
 }
 
 .clubheader {
-  margin: 0 5px 0 5px;
+  margin: 0 20px 0 20px;
 }
 
+.card-header {
+  background: #343a40;
+  color: #fff;
+}
 /* End of Coles CSS Input */
 
 /*.card {
