@@ -155,7 +155,7 @@
 
     }
 
-    $("#logIn").on("click", function() {
+    $("#logIn").on("click", () => {
         event.preventDefault();
         var currentURL = window.location
 
@@ -166,23 +166,28 @@
             userName: returningUserName,
             password: returningUserPassword
         }
-        console.log(returningUser)
 
-        $.get("api/users", function(res) {
+        $.get("api/users", (res) => {
             console.log(res);
-            for (var i = 0; i < res.length; i++){
-                if (returningUser.userName === res[i].userName && returningUser.password === res[i].password) {
-                    location.href = currentURL;
-                } else {
-                    var wrongUserOrPass = $("<p>");
-                    wrongUserOrPass.text("Either the username or password are incorrect. Please try agian.")
-                    $(".cont_form_login").append(wrongUserOrPass);
-                }
+
+            let obj = res.find(o => o.userName === returningUser.userName && o.password === returningUser.password);
+            console.log(obj)
+
+            if (obj === undefined) {
+                var wrongUserOrPass = $("<p>");
+                wrongUserOrPass.text("Either the username or password are incorrect. Please try agian.");
+                $(".cont_form_login").append(wrongUserOrPass);
+            } else {
+                $("#returningUserName").val("");
+                $("#returningUserPassword").val("");
+                alert("You are now logged in!\n(Warning: returning to the homepage will log you out of your current session.)");
+                $("#clubhouseLink").attr("href", "/clubhouse");
+                $("#draftroomLink").attr("href", "/draft");
             }
         })
     })
 
-    $("#signUp").on("click", function() {
+    $("#signUp").on("click", () => {
         var currentURL = window.location;
 
         var newUserName = $("#newUserName").val().trim();
@@ -200,7 +205,9 @@
 
         if (newUserPassword == newUserPasswordConfirm) {
             $.post(currentURL + "api/users", newUser);
-            // location.href = currentURL
+            $("#newUserName").val("");
+            $("#newUserPassword").val("");
+            $("#newUserPasswordConfirm").val("");
             $("#clubhouseLink").attr("href", "/clubhouse");
             $("#draftroomLink").attr("href", "/draft");
         } else {
