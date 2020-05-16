@@ -155,7 +155,7 @@
 
     }
 
-    $("#logIn").on("click", () => {
+    $("#logIn").on("click", function() {
         event.preventDefault();
         var currentURL = window.location
 
@@ -166,26 +166,32 @@
             userName: returningUserName,
             password: returningUserPassword
         }
+        
 
-        $.get("api/users", (res) => {
-            console.log(res);
-
+        $.get("api/users", function(res) {
+            
             let obj = res.find(o => o.userName === returningUser.userName && o.password === returningUser.password);
             console.log(obj)
-
             if (obj === undefined) {
                 var wrongUserOrPass = $("<p>");
                 wrongUserOrPass.text("Either the username or password are incorrect. Please try agian.");
                 $(".cont_form_login").append(wrongUserOrPass);
             } else {
-                $("#returningUserName").val("");
-                $("#returningUserPassword").val("");
-                alert("You are now logged in!\n(Warning: returning to the homepage will log you out of your current session.)");
+                var loggedIn = $("<p>");
+                loggedIn.text("Logged in. Warning: returning to the home page will log you out of your current session");
+                $(".cont_form_login").append(loggedIn);
                 $("#clubhouseLink").attr("href", "/clubhouse");
                 $("#draftroomLink").attr("href", "/draft");
+                redirect();
             }
         })
-    })
+        
+    });
+
+    function redirect() {
+        window.location.pathname = '/clubhouse'
+    }
+
 
     $("#signUp").on("click", () => {
         var currentURL = window.location;

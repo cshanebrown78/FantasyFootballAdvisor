@@ -11,4 +11,4 @@ services:
 env:
   - NODE_ENV=test
 before_install:
-  - mysql -e 'USE DATABASE hop9kmesikdqkg9q;'
+  - mysql -e 'USE DATABASE testdb;'
