@@ -8,5 +8,7 @@ cache:
     - node_modules
 services:
   - mysql
+env:
+  - NODE_ENV=test
 before_install:
-  - mysql -e 'CREATE DATABASE teamdb;'
+  - mysql -e 'CREATE DATABASE testdb;'
