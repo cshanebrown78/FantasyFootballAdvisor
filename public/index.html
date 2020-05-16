@@ -13,21 +13,6 @@
 
 <body>
 
-    <!-- <div class id="nav">
-        <h1 class="title">Fantasy Football Advisor</h1>
-        <ul class="nav justify-content-center">
-            <li class="nav-item">
-                <a class="nav-link" href="#">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Clubhouse</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Draftroom</a>
-            </li>
-        </ul>
-    </div> -->
-
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
             aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,10 +31,11 @@
                     <a class="nav-link" id="draftroomLink" >Draftroom</a>
                 </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0">
+            <!-- FUTURE DEVELOPMENT 
+                <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+            </form> -->
         </div>
     </nav>
     <div class="jumbotron jumbotron-fluid">
@@ -182,25 +168,31 @@
             userName: returningUserName,
             password: returningUserPassword
         }
-        console.log(returningUser)
+        
 
         $.get("api/users", function(res) {
-            console.log(res);
-            for (var i = 0; i < res.length; i++){
-                if (returningUser.userName === res[i].userName && returningUser.password === res[i].password) {
-                    $("#returningUserName").val("");
-                    $("#returningUserPassword").val("");
-                    alert("You are logged in.")
-                    $("#clubhouseLink").attr("href", "/clubhouse");
-                    $("#draftroomLink").attr("href", "/draft");;
-                } else {
-                    var wrongUserOrPass = $("<p>");
-                    wrongUserOrPass.text("Either the username or password are incorrect. Please try again.")
-                    $(".cont_form_login").append(wrongUserOrPass);
-                };
-            };
-        });
+            
+            let obj = res.find(o => o.userName === returningUser.userName && o.password === returningUser.password);
+            console.log(obj)
+            if (obj === undefined) {
+                var wrongUserOrPass = $("<p>");
+                wrongUserOrPass.text("Either the username or password are incorrect. Please try agian.");
+                $(".cont_form_login").append(wrongUserOrPass);
+            } else {
+                var loggedIn = $("<p>");
+                loggedIn.text("Logged in. Warning: returning to the home page will log you out of your current session");
+                $(".cont_form_login").append(loggedIn);
+                $("#clubhouseLink").attr("href", "/clubhouse");
+                $("#draftroomLink").attr("href", "/draft");
+                redirect();
+            }
+        })
+        
     });
+
+    function redirect() {
+        window.location.pathname = '/clubhouse'
+    }
 
     $("#signUp").on("click", function() {
         var currentURL = window.location;
@@ -219,9 +211,9 @@
             $("#newUserName").val("");
             $("#newUserPassword").val("");
             $("#newUserPasswordConfirm").val("");
-            alert("You are logged in.")
             $("#clubhouseLink").attr("href", "/clubhouse");
             $("#draftroomLink").attr("href", "/draft");
+            redirect();
         } else {
             $(".cont_form_sign_up").append(passwordsDontMatch);
         }

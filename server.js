@@ -13,14 +13,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));
 
-// Handlebars
-// app.engine(
-//   "handlebars",
-//   exphbs({
-//     defaultLayout: "main"
-//   })
-// );
-// app.set("view engine", "handlebars");
 
 app.set("views", path.join(__dirname, "public"));
 app.set("view engine", "html");
@@ -36,6 +28,7 @@ var syncOptions = { force: false };
 
 // If running a test, set syncOptions.force to true
 // clearing the `testdb`
+// Tests
 if (process.env.NODE_ENV === "test") {
   syncOptions.force = true;
 }
