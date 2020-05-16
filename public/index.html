@@ -34,16 +34,16 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <a class="navbar-brand" href="#">Fantasy Football Advisor</a>
+            <a class="navbar-brand" >Fantasy Football Advisor</a>
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item active">
-                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" id="homeLink" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/clubhouse">Club House</a>
+                    <a class="nav-link" id="clubhouseLink" >Club House</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/draft">Draftroom</a>
+                    <a class="nav-link" id="draftroomLink" >Draftroom</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
@@ -96,7 +96,7 @@
                             alt="" />
                     </div>
                     <div class="cont_form_login">
-                        <a href="#" onclick="ocultar_login_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
+                        <a onclick="ocultar_login_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
                         <h2>LOGIN</h2>
                         <input type="text" id="returningUserName" placeholder="Username" />
                         <input type="password" id="returningUserPassword" placeholder="Password" />
@@ -104,7 +104,7 @@
                     </div>
 
                     <div class="cont_form_sign_up">
-                        <a href="#" onclick="ocultar_login_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
+                        <a onclick="ocultar_login_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
                         <h2>SIGN UP</h2>
                         <input type="text" id="newUserName" placeholder="Username" />
                         <input type="password" id="newUserPassword" placeholder="Password" />
@@ -188,35 +188,40 @@
             console.log(res);
             for (var i = 0; i < res.length; i++){
                 if (returningUser.userName === res[i].userName && returningUser.password === res[i].password) {
-                    location.href = currentURL;
+                    $("#returningUserName").val("");
+                    $("#returningUserPassword").val("");
+                    alert("You are logged in.")
+                    $("#clubhouseLink").attr("href", "/clubhouse");
+                    $("#draftroomLink").attr("href", "/draft");;
                 } else {
                     var wrongUserOrPass = $("<p>");
-                    wrongUserOrPass.text("Either the username or password are incorrect. Please try agian.")
+                    wrongUserOrPass.text("Either the username or password are incorrect. Please try again.")
                     $(".cont_form_login").append(wrongUserOrPass);
-                }
-            }
-        })
-    })
+                };
+            };
+        });
+    });
 
     $("#signUp").on("click", function() {
         var currentURL = window.location;
-
         var newUserName = $("#newUserName").val().trim();
         var newUserPassword = $("#newUserPassword").val().trim();
         var newUserPasswordConfirm = $("#newUserPasswordConfirm").val().trim();
-
         var newUser = {
             userName: newUserName,
             password: newUserPassword
         }
         console.log(newUser)
-
         var passwordsDontMatch = $("<p>");
         passwordsDontMatch.text("Sorry, passwords do not match. Please try again.");
-
         if (newUserPassword == newUserPasswordConfirm) {
             $.post(currentURL + "api/users", newUser);
-            location.href = currentURL
+            $("#newUserName").val("");
+            $("#newUserPassword").val("");
+            $("#newUserPasswordConfirm").val("");
+            alert("You are logged in.")
+            $("#clubhouseLink").attr("href", "/clubhouse");
+            $("#draftroomLink").attr("href", "/draft");
         } else {
             $(".cont_form_sign_up").append(passwordsDontMatch);
         }

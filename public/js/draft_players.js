@@ -6,9 +6,6 @@ $(document).ready(function() {
     var teContainer = $(".te-container");
     var userContainer = $(".user-container");
     var otherContainer = $(".other-container");
-    var qbList = $(".qbs")
-    var nextRow = $(".next-qb-row")
-    var qbs = [];
 
 
     getQBs();
