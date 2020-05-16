@@ -1,21 +1,21 @@
 module.exports = function(sequelize, DataTypes) {
   var Players = sequelize.define("Players", {
-    draftRank: DataTypes.INTEGER,
-    playerName: DataTypes.STRING,
+    draft_rank: DataTypes.INTEGER,
+    player_name: DataTypes.STRING,
     position: DataTypes.STRING,
-    teamAbbreviate: DataTypes.STRING,
-    teamName: DataTypes.STRING,
-    projectedPoints: DataTypes.DECIMAL(4, 1),
+    team_abbreviate: DataTypes.STRING,
+    team_name: DataTypes.STRING,
+    projected_points: DataTypes.DECIMAL(4,1),
     bye: DataTypes.INTEGER,
-    userTeam: DataTypes.BOOLEAN,
-    otherTeam: DataTypes.BOOLEAN,
+    user_team: DataTypes.BOOLEAN,
+    other_team: DataTypes.BOOLEAN,
     createdAt: {
       type: DataTypes.DATE,
-      defaultValue: sequelize.literal("NOW()")
+      defaultValue: sequelize.literal('NOW()')
     },
     updatedAt: {
       type: DataTypes.DATE,
-      defaultValue: sequelize.literal("NOW()")
+      defaultValue: sequelize.literal('NOW()')
     }
   });
 

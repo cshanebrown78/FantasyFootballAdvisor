@@ -1,2 +1,11 @@
-models/index.js
 node_modules
+models/index.js
+models/player.js
+models/userInfo.js
+models/player.js
+public/js/draft_players.js
+public/js/clubhouse.js
+routes/htmlRoutes.js
+routes/players_apiRoutes.js
+routes/user_apiRoutes.js
+server.js
